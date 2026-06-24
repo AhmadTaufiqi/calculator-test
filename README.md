@@ -6,7 +6,7 @@
 
 #### 1. Please Follow this illustration to build Datatype CLT Layup
 
-<img width="2816" height="1536" alt="clt-layup" src="https://github.com/user-attachments/assets/3ad7ed6d-2373-4226-8b3c-b62f95a5910b" />
+<img width="2816" height="1536" alt="clt-layup" src="https://github.com/user-attachments/assets/66c3569f-e169-4bb7-9b03-2a4644d166f6" />
 
 <span style="font-size: 18px">
   On the illustration above we have Layer 1, Layer 2 etc. Each Layer will be covered on datatype CLTLayerType. For combination of layers, we will store on CLTLayupType. So please Build the Data Structure as the illustration above.
@@ -39,6 +39,9 @@
     </li>
     <li>
       The Candidate freely to delete, update, add the code to implement executing this test
+    </li>
+    <li>
+      Tambahkan limitasi untuk shear analogy simetric dari atas ke bawah. Lalu untuk Gamma Hanya bisa 3 dan 5 layer saja.
     </li>
     <li>
       Please fork this branch and make branch <b>assignment-"name"</b> and add https://github.com/NurAfianto and https://github.com/ikhsan017 as contributor
