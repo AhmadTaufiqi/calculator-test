@@ -29,7 +29,20 @@ function calculate() {
     calculateEiIi();
     calculateBeffTiHi2();
     calculateBeffTi3();
-    calculateSEiIiXX
+    calculateSEiIiXX();
+
+    GammaLabel();
+    calculateGammaDi();
+    calculateGammaBiDi();
+    calculateGammaAi();
+    calculateGammaGR();
+    calculateGammaLabelGi();
+    calculateGammaFactor();
+    calculateGammaAiPosition();
+    calculateGammaBeffTi3();
+    calculateGammaBeffTiAi2();
+    calculateGammaEiEff();
+    calculateGammaSEIeff();
 
     console.log(layout)
     return layout;
@@ -126,20 +139,194 @@ function calculateBeffTi3() {
     });
 }
 
-// this is acumulation SeiliXX
+// this is acumulation Shear Analogy SeiliXX
 function calculateSEiIiXX() {
-    if (layout.layers.length === 1) {
-        const layer = layout.layers[0];
-        layout.SEiIiXX =
-            Math.pow(layer.thickness, 3) *
-            layout.beff *
-            layer.Ei /
-            12;
-        return;
-    }
-
     layout.SEiIiXX = layout.layers.reduce((total, layer) => {
         return total + layer.EiIi;
     }, 0);
+}
 
+
+// gamma method
+function GammaLabel() {
+    const labels = [
+        "d1",
+        "d1,2",
+        "d2",
+        "d2,3",
+        "d3"
+    ];
+
+    layout.gamma.layers.forEach((layer, index) => {
+        layer.label = labels[index];
+    });
+}
+
+function calculateGammaDi() {
+    layout.gamma.layers.forEach(layer => {
+        layer.di = layer.thickness;
+    });
+}
+
+function calculateGammaBiDi() {
+    layout.gamma.layers.forEach(layer => {
+        if (layer.label === "d1" ||
+            layer.label === "d2" ||
+            layer.label === "d3") {
+            layer.biDi = layout.beff / layer.di;
+        } else {
+            layer.biDi = 0;
+        }
+    });
+}
+
+function calculateGammaAi() {
+    layout.gamma.layers.forEach(layer => {
+        if (layer.biDi) {
+            layer.Ai =
+                layout.beff *
+                layer.di;
+        } else {
+            layer.Ai = 0;
+        }
+    });
+}
+
+function calculateGammaGR() {
+    layout.gamma.layers.forEach(layer => {
+        switch (layer.label) {
+
+            case "d1":
+                layer.GR = 63;
+                break;
+
+            case "d2":
+                layer.GR = 688;
+                break;
+
+            case "d3":
+                layer.GR = 63;
+                break;
+
+            default:
+                layer.GR = 0;
+        }
+    });
+}
+
+function calculateGammaLabelGi() {
+    const labels = [
+        "g1",
+        "-",
+        "g2",
+        "-",
+        "g3"
+    ];
+
+    layout.gamma.layers.forEach((layer, index) => {
+        layer.gLabel = labels[index];
+    });
+}
+
+function calculateGammaFactor() {
+    layout.gamma.layers.forEach(layer => {
+        if (layer.label === "d2") {
+            layer.gamma = 1;
+            return;
+        }
+
+        if (layer.GR === 0) {
+            layer.gamma = 0;
+            return;
+        }
+
+        layer.gamma =
+            1 /
+            (
+                1 +
+                (
+                    Math.PI ** 2 *
+                    layer.Ei *
+                    layer.di
+                ) /
+                (
+                    layer.biDi *
+                    layer.GR *
+                    layout.Lref ** 2
+                )
+            );
+    });
+}
+
+function calculateGammaAiPosition() {
+    const g = layout.gamma.layers;
+
+    // hanya Gamma 5 Layer
+    if (g.length !== 5)
+        return;
+
+    const a2 =
+        (
+            g[0].gamma * g[0].Ei * g[0].Ai * (g[0].di / 2 + g[1].di + g[2].di / 2)
+            -
+            g[4].gamma * g[4].Ei * g[4].Ai * (g[2].di / 2 + g[3].di + g[4].di / 2)
+        )
+        /
+        (
+            g[0].gamma * g[0].Ei * g[0].Ai
+            +
+            g[2].gamma * g[2].Ei * g[2].Ai
+            +
+            g[4].gamma * g[4].Ei * g[4].Ai
+        );
+
+    g[2].ai = a2;
+    g[0].ai = (g[0].di / 2 + g[1].di + g[2].di / 2) - a2;
+    g[4].ai = (g[2].di / 2 + g[3].di + g[4].di / 2) + a2;
+}
+
+function calculateGammaBeffTi3() {
+    layout.gamma.layers.forEach(layer => {
+        if (layer.ai === null) {
+            layer.beffTi3 = null;
+            return;
+        }
+        layer.beffTi3 = layout.beff * Math.pow(layer.di, 3) / 12;
+    });
+}
+
+function calculateGammaBeffTiAi2() {
+    layout.gamma.layers.forEach(layer => {
+        if (layer.ai === null) {
+            layer.beffTiAi2 = null;
+            return;
+        }
+        layer.beffTiAi2 = layout.beff * layer.di * Math.pow(layer.ai, 2);
+    });
+}
+
+function calculateGammaEiEff() {
+    layout.gamma.layers.forEach(layer => {
+        if (layer.ai === null) {
+            layer.EIeff = null;
+            return;
+        }
+        layer.EIeff =
+            (
+                layer.beffTi3 +
+                (layer.gi * layer.beffTiAi2)
+            ) * layer.Ei;
+    });
+}
+
+function calculateGammaSEIeff() {
+    const validLayers = layout.gamma.layers.filter(layer => layer.EIeff !== null);
+    if (validLayers.length === 0) {
+        layout.gamma.SEIeff = null;
+        return;
+    }
+
+    layout.gamma.SEIeff = validLayers.reduce((sum, layer) => {
+        return sum + layer.EIeff;
+    }, 0);
 }
