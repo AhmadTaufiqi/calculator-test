@@ -4,16 +4,12 @@ class Renderer {
         this.table =
             document.getElementById("layerTableBody");
 
-        this.preview =
-            document.getElementById("layoutPreview");
-
         this.totalThickness =
             document.getElementById("totalThickness");
     }
 
     render(layout) {
         this.renderTable(layout);
-        this.renderPreview(layout);
         this.renderThickness(layout);
     }
 
@@ -92,34 +88,6 @@ class Renderer {
         });
     }
 
-
-    renderPreview(layout) {
-
-        this.preview.innerHTML = "";
-        layout.layers.forEach((layer, index) => {
-            const cls =
-                layer.orientation == 0
-                    ? "primary"
-                    : "cross";
-            const text =
-                layer.orientation == 0
-                    ? "Primary"
-                    : "Cross";
-
-            this.preview.innerHTML += `
-            <div class="layer ${cls}">
-                <span>
-                    Layer ${index + 1}
-                </span>
-                <span class="orientation">
-                    ${layer.orientation}°
-                    ${text}
-                </span>
-            </div>
-            `;
-        });
-    }
-
     renderThickness(layout) {
 
         let total = 0;
@@ -127,7 +95,7 @@ class Renderer {
             total += Number(layer.thickness);
         });
 
-        this.totalThickness.innerHTML =
-            total + " mm";
+        this.totalThickness.innerHTML = total + " mm";
+        document.getElementById('totalLayers').innerHTML = layout.layers.length;
     }
 }

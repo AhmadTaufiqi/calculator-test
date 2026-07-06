@@ -54,12 +54,14 @@ document
     .getElementById("gammaMethod")
     .addEventListener("change", () => {
         renderOption('gamma');
+        layout.method_option = 'gamma';
     });
 
 document
     .getElementById("shearMethod")
     .addEventListener("change", () => {
         renderOption('shear');
+        layout.method_option = shear;
     });
 
 function renderOption(method) {
@@ -114,16 +116,27 @@ document
             return;
 
         const result = calculate();
-        console.log(result);
     });
 
 function updateLayout() {
+    const impact = document.getElementById('impact').value;
+    method = document.querySelector("input[name='method']:checked").value;
+    rows = document.querySelectorAll("#layerTableBody tr");
+
     layout = {
-        layerCount: 0,
-        layers: []
+        layerCount: rows.length,
+        layers: [],
+        beff:impact,
+        method_option:method,
+        gamma:{
+            layers:[]
+        },
+        shear: {
+            layers:[]
+        }
     };
 
-    document.querySelectorAll("#layerTableBody tr").forEach((row, index) => {
+    rows.forEach((row, index) => {
 
         layout.layers.push({
             index: index + 1,

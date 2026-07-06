@@ -48,13 +48,15 @@
                                 Analytical Method
                             </b>
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="method" value="shear" checked id="shearMethod">
+                                <input class="form-check-input" type="radio" name="method" value="shear" checked
+                                    id="shearMethod">
                                 <label class="form-check-label" for="shearMethod">
                                     Shear Analogy (3-9 Layers)
                                 </label>
                             </div>
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="method" value="gamma" id="gammaMethod">
+                                <input class="form-check-input" type="radio" name="method" value="gamma"
+                                    id="gammaMethod">
                                 <label class="form-check-label" for="gammaMethod">
                                     Gamma Method (3-5 Layers)
                                 </label>
@@ -62,19 +64,26 @@
                         </div>
 
                         <!-- LAYER -->
-                        <div class="mb-4">
-                            <label class="form-label fw-semibold">
-                                Number of Layers
-                            </label>
+                        <div class="row mb-4">
+                            <div class="col">
+                                <label class="form-label fw-semibold">
+                                    Number of Layers
+                                </label>
 
-                            <select class="form-select" id="layerCount">
-                                <option value="">select layers</option>
-                                <!-- <option value="3">3 Layers</option>
+                                <select class="form-select" id="layerCount">
+                                    <option value="">select layers</option>
+                                    <!-- <option value="3">3 Layers</option>
                                 <option value="5">5 Layers</option>
                                 <option value="7">7 Layers</option>
                                 <option value="9">9 Layers</option> -->
-                            </select>
+                                </select>
+                            </div>
+                            <div class="col">
+                                <label class="form-label fw-semibold" for="">Impact</label>
+                                <input type="text" class="form-control" name="impact" id="impact">
+                            </div>
                         </div>
+
 
                         <!-- TABLE -->
                         <div class="table-responsive">
@@ -121,88 +130,52 @@
 
             <!-- RIGHT -->
             <div class="col-lg-6">
-                <div class="card shadow-sm border-0 h-100">
+                <div class="card shadow-sm border-0">
                     <div class="card-header bg-white">
-                        <h5 class="mb-0">
-                            <i class="bi bi-eye"></i>
-                            CLT Layout Preview
+                        <h5>
+                            <i class="bi bi-bar-chart"></i>
+                            Panel Properties
                         </h5>
                     </div>
-                    <div class="card-body" id="layoutPreview">
-                        <div class="layer primary">
-                            Layer 1 — 0°
+
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <div class="stat-card">
+                                    <small>Total Thickness</small>
+                                    <h4 id="totalThickness">-</h4>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="stat-card">
+                                    <small>Layers</small>
+                                    <h4 id="totalLayers">0</h4>
+                                </div>
+                            </div>
                         </div>
-                        <div class="alert alert-primary mt-4 total-box">
-                            <strong>Total Thickness</strong>
-                            <span class="float-end" id="totalThickness">
-                                175 mm
-                            </span>
-                        </div>
+
+                        <table class="table">
+                            <tbody>
+                                <tr>
+                                    <th>Bending Stiffness (EI)</th>
+                                    <td>4,275,000 Nmm²</td>
+                                </tr>
+                                <tr>
+                                    <th>Gamma Factor</th>
+                                    <td>0.85</td>
+                                </tr>
+                                <tr>
+                                    <th>Moment of Inertia</th>
+                                    <td>50,293,412 mm⁴</td>
+                                </tr>
+                                <tr>
+                                    <th>Neutral Axis</th>
+                                    <td>87.5 mm</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
-            </div>
-        </div>
-
-
-        <!-- OUTPUT -->
-        <div class="card shadow-sm border-0 mt-4">
-            <div class="card-header bg-white">
-                <h5>
-                    <i class="bi bi-bar-chart"></i>
-                    Panel Properties
-                </h5>
-            </div>
-
-            <div class="card-body">
-                <div class="row g-3">
-                    <div class="col-md-3">
-                        <div class="stat-card">
-                            <small>Total Thickness</small>
-                            <h4>175 mm</h4>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="stat-card">
-                            <small>Method</small>
-                            <h4>Gamma</h4>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="stat-card">
-                            <small>Layers</small>
-                            <h4>5</h4>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="stat-card">
-                            <small>Status</small>
-                            <h4 class="text-success">
-                                Valid
-                            </h4>
-                        </div>
-                    </div>
-                </div>
-
-                <table class="table">
-                    <tbody>
-                        <tr>
-                            <th>Bending Stiffness (EI)</th>
-                            <td>4,275,000 Nmm²</td>
-                        </tr>
-                        <tr>
-                            <th>Gamma Factor</th>
-                            <td>0.85</td>
-                        </tr>
-                        <tr>
-                            <th>Moment of Inertia</th>
-                            <td>50,293,412 mm⁴</td>
-                        </tr>
-                        <tr>
-                            <th>Neutral Axis</th>
-                            <td>87.5 mm</td>
-                        </tr>
-                    </tbody>
-                </table>
             </div>
         </div>
     </div>

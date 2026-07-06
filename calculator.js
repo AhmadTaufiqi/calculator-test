@@ -26,25 +26,26 @@ function calculate() {
     calculateHi();
     calculateGi();
 
-    calculateEiIi();
-    calculateBeffTiHi2();
-    calculateBeffTi3();
-    calculateSEiIiXX();
+    if (layout.method_option === 'shear') {
+        calculateBeffTi3();
+        calculateBeffTiHi2();
+        calculateEiIi();
+        calculateSEiIiXX();
+    } else {
+        GammaLabel();
+        calculateGammaDi();
+        calculateGammaBiDi();
+        calculateGammaAi();
+        calculateGammaGR();
+        calculateGammaLabelGi();
+        calculateGammaFactor();
+        calculateGammaAiPosition();
+        calculateGammaBeffTi3();
+        calculateGammaBeffTiAi2();
+        calculateGammaEiEff();
+        calculateGammaSEIeff();
+    }
 
-    GammaLabel();
-    calculateGammaDi();
-    calculateGammaBiDi();
-    calculateGammaAi();
-    calculateGammaGR();
-    calculateGammaLabelGi();
-    calculateGammaFactor();
-    calculateGammaAiPosition();
-    calculateGammaBeffTi3();
-    calculateGammaBeffTiAi2();
-    calculateGammaEiEff();
-    calculateGammaSEIeff();
-
-    console.log(layout)
     return layout;
 
 }
@@ -79,10 +80,11 @@ function calculateEi() {
             layer.Ei = 0;
             return;
         }
+
         layer.Ei = layer.thickness > 0
             ? (layer.orientation === 0
                 ? material.E
-                : material.E90)
+                : 0)
             : 0;
     });
 }
@@ -127,6 +129,7 @@ function calculateBeffTiHi2() {
         const beff = layout.beff;
         const ti = layer.thickness;
         const hi = layer.hi;
+
         layer.beffTiHi2 = beff * ti * Math.pow(hi, 2);
     });
 }
@@ -156,9 +159,10 @@ function GammaLabel() {
         "d2,3",
         "d3"
     ];
-
-    layout.gamma.layers.forEach((layer, index) => {
+    
+    layout.layers.forEach((layer, index) => {
         layer.label = labels[index];
+        console.log(layer);
     });
 }
 
@@ -326,7 +330,9 @@ function calculateGammaSEIeff() {
         return;
     }
 
-    layout.gamma.SEIeff = validLayers.reduce((sum, layer) => {
+    layout.SEIeff = validLayers.reduce((sum, layer) => {
         return sum + layer.EIeff;
     }, 0);
+
+    console.log(layout)
 }
